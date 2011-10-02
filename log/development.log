@@ -1,0 +1,88 @@
+
+
+Started GET "/" for 127.0.0.1 at 2011-10-02 15:13:41 -0500
+  Processing by FacebookController#index as HTML
+Redirected to http://localhost:3000/facebook/login
+Completed 302 Found in 1ms
+
+
+Started GET "/facebook/login" for 127.0.0.1 at 2011-10-02 15:13:41 -0500
+  Processing by FacebookController#login as HTML
+Rendered facebook/login.html.haml within layouts/application (6.5ms)
+Completed 200 OK in 13ms (Views: 12.6ms)
+
+
+Started GET "/facebook/login" for 127.0.0.1 at 2011-10-02 15:14:07 -0500
+  Processing by FacebookController#login as HTML
+Rendered facebook/login.html.haml within layouts/application (5.0ms)
+Completed 200 OK in 9ms (Views: 8.3ms)
+
+
+Started GET "/" for 127.0.0.1 at 2011-10-02 16:50:51 -0500
+  Processing by FacebookController#index as HTML
+Redirected to http://localhost:3000/facebook/login
+Completed 302 Found in 1ms
+
+
+Started GET "/facebook/login" for 127.0.0.1 at 2011-10-02 16:50:51 -0500
+  Processing by FacebookController#login as HTML
+Rendered facebook/login.html.haml within layouts/application (5.0ms)
+Completed 200 OK in 9ms (Views: 8.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2011-10-02 16:56:08 -0500
+  Processing by FacebookController#index as HTML
+Redirected to http://localhost:3000/facebook/login
+Completed 302 Found in 1ms
+
+
+Started GET "/facebook/login" for 127.0.0.1 at 2011-10-02 16:56:08 -0500
+  Processing by FacebookController#login as HTML
+Rendered facebook/login.html.haml within layouts/application (5.5ms)
+Completed 200 OK in 9ms (Views: 8.8ms)
+
+
+Started GET "/" for 127.0.0.1 at 2011-10-02 16:57:55 -0500
+  Processing by FacebookController#index as HTML
+Redirected to http://localhost:3000/facebook/login
+Completed 302 Found in 1ms
+
+
+Started GET "/facebook/login" for 127.0.0.1 at 2011-10-02 16:57:55 -0500
+  Processing by FacebookController#login as HTML
+Rendered facebook/login.html.haml within layouts/application (6.6ms)
+Completed 200 OK in 10ms (Views: 10.0ms)
+
+
+Started GET "/facebook/login" for 127.0.0.1 at 2011-10-02 17:05:53 -0500
+  Processing by FacebookController#login as HTML
+Rendered facebook/login.html.haml within layouts/application (6.2ms)
+Completed 200 OK in 10ms (Views: 9.7ms)
+
+
+Started GET "/facebook/login" for 127.0.0.1 at 2011-10-02 17:06:19 -0500
+  Processing by FacebookController#login as HTML
+Rendered facebook/login.html.haml within layouts/application (6.1ms)
+Completed 200 OK in 11ms (Views: 10.8ms)
+
+
+Started GET "/facebook/login" for 127.0.0.1 at 2011-10-02 17:09:26 -0500
+  Processing by FacebookController#login as HTML
+
+
+Started GET "/facebook/login" for 127.0.0.1 at 2011-10-02 17:11:02 -0500
+  Processing by FacebookController#login as HTML
+Rendered facebook/login.html.haml within layouts/application (9.9ms)
+Completed 200 OK in 6384ms (Views: 15.5ms)
+
+
+Started GET "/" for 127.0.0.1 at 2011-10-02 17:11:49 -0500
+  Processing by FacebookController#index as HTML
+Redirected to http://localhost:3000/facebook/login
+Completed 302 Found in 1ms
+
+
+Started GET "/facebook/login" for 127.0.0.1 at 2011-10-02 17:11:49 -0500
+  Processing by FacebookController#login as HTML
+Rendered facebook/login.html.haml within layouts/application (15.8ms)
+Completed 200 OK in 26ms (Views: 25.8ms)
