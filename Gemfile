@@ -37,4 +37,7 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'ruby-debug19'
+  gem "cucumber"
+  gem "cucumber-rails"
+  gem "capybara"
 end
