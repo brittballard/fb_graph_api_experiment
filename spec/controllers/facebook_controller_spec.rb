@@ -14,7 +14,7 @@ describe FacebookController do
         @friend_user = mock('friend_user')
         User.should_receive(:new).with(@graph, 43).and_return(@friend_user)
         @friend_user.should_receive(:top_feed_commenter).and_return(@top_feed_commenter)
-        get :top_feed_commenter, :id => 43
+        get :top_feed_commenter, :friend_id => 43
       end
       
       it { response.should be_success }

@@ -17,7 +17,7 @@ class FacebookController < ApplicationController
   end
 
   def top_feed_commenter
-    
+    @top_feed_commenter = User.new(@graph, params[:friend_id]).top_feed_commenter
   end
 
   protected
