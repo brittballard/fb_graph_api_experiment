@@ -23,6 +23,13 @@ describe User do
           "id"=>"3007587"
         }
       ]
+      @graph.should_receive(:get_connections).with(@uid, 'friends').once.and_return(@friends)
+    end
+    
+    describe '#feed' do
+      it 'should retrieve friends via the graph api' do
+        @user.friends.should == @friends
+      end
     end
   end
 
@@ -51,6 +58,13 @@ describe User do
                   }
         }
       ]
+      @graph.should_receive(:get_connections).with(@uid, 'feed', :limit => 100).once.and_return(@feed)
+    end
+    
+    describe '#feed' do
+      it 'should retrieve the feed via the graph api' do
+        @user.feed.should == @feed
+      end
     end
   end
 
