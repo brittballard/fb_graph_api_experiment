@@ -1,0 +1,6 @@
+- if @top_feed_commenters.present?
+  %ul
+    - @top_feed_commenters.each do |friend|
+      %li= friend['name']
+- else
+  Nobody has posted on this friends wall!

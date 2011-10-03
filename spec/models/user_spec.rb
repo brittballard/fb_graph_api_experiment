@@ -64,7 +64,7 @@ describe User do
                   }
         }
       ]
-      @graph.should_receive(:get_connections).with(@uid, 'feed', :limit => 500).once.and_return(@feed)
+      @graph.should_receive(:get_connections).with(@uid, 'feed', :limit => 500, :fields => 'from').once.and_return(@feed)
     end
     
     describe '#feed' do
