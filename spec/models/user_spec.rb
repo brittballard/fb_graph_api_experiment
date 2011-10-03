@@ -7,6 +7,65 @@ describe User do
     @user = User.new(@graph, @uid)
   end
 
+  describe 'top_commenter' do
+    before do
+      @feed = [
+        {
+          "id" => "1044302049_2218102325781", 
+          "from"=> {
+                    "name"=>"Chris Sherwyn", 
+                    "id"=>"8321440"
+                    }, 
+        }, 
+        {
+          "id"=>"1044302049_2216325561363", 
+          "from"=>{
+                    "name"=>"Colin Rohan Simithraaratchy", 
+                    "id"=>"#{@uid}"
+                  }, 
+        }, 
+        {
+          "id"=>"1044302049_2216325561364", 
+          "from"=>{
+                    "name"=>"Colin Rohan Simithraaratchy", 
+                    "id"=>"#{@uid}"
+                  }, 
+        },
+        {
+          "id"=>"1044302049_2216325561365", 
+          "from"=>{
+                    "name"=>"Colin Rohan Simithraaratchy", 
+                    "id"=>"#{@uid}"
+                  }, 
+        },
+        {
+          "id"=>"1044302049_2138559657264", 
+          "from"=>{
+                    "name"=>"Collin Williams", 
+                    "id"=>"1492711784"
+                  }
+        },
+        {
+          "id"=>"1044302049_2138559657265", 
+          "from"=>{
+                    "name"=>"Collin Williams", 
+                    "id"=>"1492711784"
+                  }
+        }
+      ]
+      @graph.should_receive(:get_connections).with(@uid, 'feed', :limit => 100).once.and_return(@feed)
+    end
+    
+    describe '#top_commenter' do
+      it 'should retrieve the feed via the graph api and determine which user is the most consistent poster other than the user themselves' do
+        @user.top_commenter.should == {
+                                        "name" => "Collin Williams",
+                                        "id" => "1492711784"
+                                      }
+      end
+    end
+  end
+
   describe 'retriving friends' do
     before do
       @friends = [
