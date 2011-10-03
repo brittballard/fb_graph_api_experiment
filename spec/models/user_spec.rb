@@ -7,65 +7,6 @@ describe User do
     @user = User.new(@graph, @uid)
   end
 
-  describe 'retreiving top feed commenter' do
-    before do
-      @feed = [
-        {
-          "id" => "1044302049_2218102325781", 
-          "from"=> {
-                    "name"=>"Chris Sherwyn", 
-                    "id"=>"8321440"
-                    }, 
-        }, 
-        {
-          "id"=>"1044302049_2216325561363", 
-          "from"=>{
-                    "name"=>"Colin Rohan Simithraaratchy", 
-                    "id"=>"#{@uid}"
-                  }, 
-        }, 
-        {
-          "id"=>"1044302049_2216325561364", 
-          "from"=>{
-                    "name"=>"Colin Rohan Simithraaratchy", 
-                    "id"=>"#{@uid}"
-                  }, 
-        },
-        {
-          "id"=>"1044302049_2216325561365", 
-          "from"=>{
-                    "name"=>"Colin Rohan Simithraaratchy", 
-                    "id"=>"#{@uid}"
-                  }, 
-        },
-        {
-          "id"=>"1044302049_2138559657264", 
-          "from"=>{
-                    "name"=>"Collin Williams", 
-                    "id"=>"1492711784"
-                  }
-        },
-        {
-          "id"=>"1044302049_2138559657265", 
-          "from"=>{
-                    "name"=>"Collin Williams", 
-                    "id"=>"1492711784"
-                  }
-        }
-      ]
-      @graph.should_receive(:get_connections).with(@uid, 'feed', :limit => 500).once.and_return(@feed)
-    end
-    
-    describe '#top_feed_commenters' do
-      it 'should retrieve the feed via the graph api and determine which user is the most consistent poster other than the user themselves' do
-        @user.top_feed_commenters.should == [{
-                                        "name" => "Collin Williams",
-                                        "id" => "1492711784"
-                                      }]
-      end
-    end
-  end
-
   describe 'retriving friends' do
     before do
       @friends = [
@@ -85,7 +26,7 @@ describe User do
       @graph.should_receive(:get_connections).with(@uid, 'friends').once.and_return(@friends)
     end
     
-    describe '#feed' do
+    describe '#friends' do
       it 'should retrieve friends via the graph api' do
         @user.friends.should == @friends
       end
@@ -143,6 +84,63 @@ describe User do
         @user.feed_with_self_posts_filtered.length.should == 2
         @user.feed_with_self_posts_filtered[0].should == @feed[0]
         @user.feed_with_self_posts_filtered[1].should == @feed[2]
+      end
+      
+      it 'should return an empty array when only self posts are returned' do
+        @feed.clear
+        @feed << {
+                    "id"=>"1044302049_2216325561363", 
+                    "from"=>{
+                              "name"=>"Colin Rohan Simithraaratchy", 
+                              "id"=>"#{@uid}"
+                            }, 
+                  }
+        @user.feed_with_self_posts_filtered.should == []
+      end
+    end
+    
+    describe '#top_feed_commenters' do
+      before do
+        @feed << {
+                    "id"=>"1044302049_2138559657265", 
+                    "from"=>{
+                              "name"=>"Collin Williams", 
+                              "id"=>"1492711784"
+                            }
+                  }
+      end
+      
+      it 'should retrieve the feed via the graph api and determine which user is the most consistent poster other than the user themselves' do
+        @user.top_feed_commenters.should == [{
+                                              "name" => "Collin Williams",
+                                              "id" => "1492711784"
+                                            }]
+      end
+      
+      it 'should return multiple friends when there is a comment count tie' do
+        @feed << {
+                    "id" => "1044302049_2218102325781", 
+                    "from"=> {
+                              "name"=>"Chris Sherwyn", 
+                              "id"=>"8321440"
+                              }, 
+                  }
+        
+        @user.top_feed_commenters.count.should == 2
+        @user.top_feed_commenters.should include({
+                                                    "name" => "Collin Williams",
+                                                    "id" => "1492711784"
+                                                  })
+                                            
+        @user.top_feed_commenters.should include({
+                                                    "name" => "Chris Sherwyn",
+                                                    "id" => "8321440"
+                                                  })
+      end
+      
+      it 'should return an empty array when only self posts, or no posts, are returned in the feed' do
+        @feed.clear
+        @user.top_feed_commenters.should == []
       end
     end
   end
