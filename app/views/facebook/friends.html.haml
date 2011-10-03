@@ -1,0 +1,3 @@
+%h2 Your "likes":
+- @friends.each do |friend|
+  %h3= link_to friend['name'], facebook_url(:top_feed_commenter, :friend_id => friend['id'])
