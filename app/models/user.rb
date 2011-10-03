@@ -6,6 +6,14 @@ class User
     @uid = uid
   end
 
+  def friends
+    @friends ||= graph.get_connections(uid, 'friends')
+  end
+
+  def feed
+    @feed ||= graph.get_connections(uid, 'feed', :limit => 100)
+  end
+
   def likes
     @likes ||= graph.get_connections(uid, 'likes')
   end
