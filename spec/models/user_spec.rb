@@ -30,6 +30,12 @@ describe User do
       it 'should retrieve friends via the graph api' do
         @user.friends.should == @friends
       end
+      
+      it 'should memoize the result after the first call' do
+        friends1 = @user.friends
+        friends2 = @user.friends
+        friends2.should equal(friends1)
+      end
     end
   end
 
@@ -64,6 +70,12 @@ describe User do
     describe '#feed' do
       it 'should retrieve the feed via the graph api' do
         @user.feed.should == @feed
+      end
+      
+      it 'should memoize the result after the first call' do
+        feed1 = @user.feed
+        feed2 = @user.feed
+        feed2.should equal(feed1)
       end
     end
   end
