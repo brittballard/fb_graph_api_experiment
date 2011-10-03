@@ -2,6 +2,28 @@ require 'spec_helper'
 
 describe FacebookController do
   
+  describe 'top_feed_commenter with GET' do
+    before do
+      setup_mock_graph_and_user
+    end
+    
+    describe 'when logged into facebook' do
+      before do
+        login_to_facebook
+        @top_feed_commenter = mock('top_feed_commenter')
+        @friend_user = mock('friend_user')
+        User.should_receive(:new).with(@graph, 43).and_return(@friend_user)
+        @friend_user.should_receive(:top_feed_commenter).and_return(@top_feed_commenter)
+        get :top_feed_commenter, :id => 43
+      end
+      
+      it { response.should be_success }
+      it 'should assign top_feed_commenter' do
+        assigns[:top_feed_commenter].should == @top_feed_commenter
+      end
+    end
+  end
+  
   describe 'friends with GET' do
     before do
       setup_mock_graph_and_user
@@ -78,6 +100,6 @@ describe FacebookController do
     user_info = {'access_token' => '1234567890', 'uid' => 42}
     @oauth.should_receive(:get_user_info_from_cookie).and_return(user_info)
     Koala::Facebook::GraphAPI.should_receive(:new).with('1234567890').and_return(@graph)
-    User.should_receive(:new).and_return(@user)
+    User.should_receive(:new).with(@graph, 42).and_return(@user)
   end
 end
