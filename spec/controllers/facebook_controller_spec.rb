@@ -27,19 +27,33 @@ describe FacebookController do
   describe 'friends with GET' do
     before do
       setup_mock_graph_and_user
+      @friends = mock('friends')
+      @limit_and_offset = 25
     end
     
     describe 'when logged into facebook' do
       before do
         login_to_facebook
-        @friends = mock('friends')
-        @user.should_receive(:friends).and_return(@friends)
+        @user.should_receive(:friends).once.and_return(@friends)
         get :friends
       end
       
       it { response.should be_success }
       it 'should assign friends' do
         assigns[:friends].should == @friends
+      end
+    end
+    
+    describe 'with paging and all appropriate params' do
+      before do
+        login_to_facebook
+        @user.should_receive(:friends).with({ :limit => @limit_and_offset, :offset => @limit_and_offset }).once.and_return(@friends)
+        get :friends, { :limit => @limit_and_offset, :offset => @limit_and_offset }
+      end
+      
+      it { response.should be_success }
+      it 'should assign offset' do
+        assigns[:offset].should == @limit_and_offset
       end
     end
   end

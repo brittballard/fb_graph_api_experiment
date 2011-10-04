@@ -1,3 +1,8 @@
 %h2 Your Friends:
 - @friends.each do |friend|
   %h3= link_to friend['name'], facebook_url(:top_feed_commenters, :friend_id => friend['id'])
+#friend-nav
+  - if show_last_friend_page_icon(@offset)
+    = link_to '-', facebook_url(:friends, :offset => get_friend_offset_backwards(@offset), :limit => get_friend_limit)
+  - if show_next_friend_page_icon(@friends.count)
+    = link_to '+', facebook_url(:friends, :offset => get_friend_offset_forward(@offset), :limit => get_friend_limit)

@@ -6,8 +6,8 @@ class User
     @uid = uid
   end
 
-  def friends
-    @friends ||= graph.get_connections(uid, 'friends')
+  def friends(api_options={})
+    graph.get_connections(uid, 'friends', api_options)
   end
 
   def feed

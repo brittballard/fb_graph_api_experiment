@@ -23,18 +23,12 @@ describe User do
           "id"=>"3007587"
         }
       ]
-      @graph.should_receive(:get_connections).with(@uid, 'friends').once.and_return(@friends)
+      @graph.should_receive(:get_connections).with(@uid, 'friends', {}).and_return(@friends)
     end
     
     describe '#friends' do
       it 'should retrieve friends via the graph api' do
         @user.friends.should == @friends
-      end
-      
-      it 'should memoize the result after the first call' do
-        friends1 = @user.friends
-        friends2 = @user.friends
-        friends2.should equal(friends1)
       end
     end
   end

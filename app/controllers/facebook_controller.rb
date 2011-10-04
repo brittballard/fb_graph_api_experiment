@@ -13,7 +13,8 @@ class FacebookController < ApplicationController
   end
 
   def friends
-    @friends = current_user.friends
+    @friends = current_user.friends({ :offset => params[:offset], :limit => params[:limit]})
+    @offset = params[:offset].to_i
   end
 
   def top_feed_commenters
