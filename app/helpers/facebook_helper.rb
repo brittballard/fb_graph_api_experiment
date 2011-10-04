@@ -11,6 +11,10 @@ module FacebookHelper
       :onlogin => 'location = "/"'})
   end
   
+  def get_offset_for_letter(friends, letter, previous_index)
+    ((friends.index { |friend| friend["name"].first == letter } || previous_index) / FRIENDS_PER_PAGE).to_i * FRIENDS_PER_PAGE
+  end
+  
   def get_friends_for_page(friends, offset)
     friends.slice(offset, FRIENDS_PER_PAGE)
   end

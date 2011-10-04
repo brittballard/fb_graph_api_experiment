@@ -1,3 +1,4 @@
+= render "alphabet"
 %h2 Your Friends:
 - get_friends_for_page(@friends, @offset).each do |friend|
   %h3= link_to friend['name'], facebook_url(:top_feed_commenters, :friend_id => friend['id'])

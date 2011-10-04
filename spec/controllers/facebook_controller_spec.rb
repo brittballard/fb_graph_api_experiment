@@ -36,12 +36,13 @@ describe FacebookController do
       before do
         login_to_facebook
         @user.should_receive(:friends).once.and_return(@friends)
-        get :friends
+        get :friends, :offset => 4
       end
       
       it { response.should be_success }
-      it 'should assign friends' do
+      it 'should assign friends and offset' do
         assigns[:friends].should == @friends
+        assigns[:offset].should == 4
       end
     end
     

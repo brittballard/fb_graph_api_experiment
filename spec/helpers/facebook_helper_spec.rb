@@ -63,4 +63,16 @@ describe FacebookHelper do
       is_or_are_top_commenters(2).should == "are"
     end
   end
+  
+  describe '#get_offset_for_letter' do
+    it 'should return the correct offset to ensure that a name with the letter selected appears on the screen' do
+      test_array = ('Aa'..'Za').to_a.map{ |name| {"name" => name} }
+      get_offset_for_letter(test_array, 'C', 0).should == 50
+    end
+    
+    it 'should return the previous offset if no name is found that starts with the letter being tested for' do
+      test_array = ('A'..'D').to_a.map{ |name| {"name" => name} }
+      get_offset_for_letter(test_array, 'F', 50).should == 50
+    end
+  end
 end
