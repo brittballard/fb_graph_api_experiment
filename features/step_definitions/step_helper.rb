@@ -1,6 +1,79 @@
 def setup_mock_graph
-  @graph.should_receive(:get_connections).with(@uid, 'likes').and_return(likes)
-  @graph.should_receive(:get_connections).with(@uid, 'friends').and_return(friends)
+  @single_top_commenter_id = "596914111"
+  @multiple_top_commenter_id = "1300913662"
+  @no_top_commenter_id = "7961179"
+  
+  @graph.should_receive(:get_connections).with(@uid, 'likes').any_number_of_times.and_return(likes)
+  @graph.should_receive(:get_connections).with(@uid, 'friends').any_number_of_times.and_return(friends)
+
+  @graph.should_receive(:get_connections).with(@single_top_commenter_id, "feed", { :limit => 500, :fields => "from" }).any_number_of_times.and_return(single_top_commenter_feed(@single_top_commenter_id))
+  @graph.should_receive(:get_connections).with(@multiple_top_commenter_id, "feed", { :limit => 500, :fields => "from" }).any_number_of_times.and_return(multiple_top_commenters_feed(@multiple_top_commenter_id))
+  @graph.should_receive(:get_connections).with(@no_top_commenter_id, "feed", { :limit => 500, :fields => "from" }).any_number_of_times.and_return(no_top_commenters_feed(@no_top_commenter_id))
+
+  @graph.should_receive(:get_object).with(@single_top_commenter_id, { :fields => "name" }).any_number_of_times.and_return({ "name" => "Aaron Boswell" })
+  @graph.should_receive(:get_object).with(@multiple_top_commenter_id, { :fields => "name" }).any_number_of_times.and_return({ "name" => "Amber Knight" })
+  @graph.should_receive(:get_object).with(@no_top_commenter_id, { :fields => "name" }).any_number_of_times.and_return({ "name" => "Adrian Thomas" })
+end
+
+def no_top_commenters_feed(uid)
+  single_top_commenter_feed(uid).select { |post| post['from']['id'] == uid }
+end
+
+def multiple_top_commenters_feed(uid)
+  single_top_commenter_feed(uid) << {
+                                  "id" => "1044302049_2218102325781", 
+                                  "from"=> {
+                                            "name"=>"Chris Sherwyn", 
+                                            "id"=>"8321440"
+                                            }, 
+                                }
+end
+
+def single_top_commenter_feed(uid)
+  [
+    {
+      "id" => "1044302049_2218102325781", 
+      "from"=> {
+                "name"=>"Chris Sherwyn", 
+                "id"=>"8321440"
+                }, 
+    }, 
+    {
+      "id"=>"1044302049_2216325561363", 
+      "from"=>{
+                "name"=>"Colin Rohan Simithraaratchy", 
+                "id"=>"#{uid}"
+              }, 
+    }, 
+    {
+      "id"=>"1044302049_2216325561364", 
+      "from"=>{
+                "name"=>"Colin Rohan Simithraaratchy", 
+                "id"=>"#{uid}"
+              }, 
+    }, 
+    {
+      "id"=>"1044302049_2216325561365", 
+      "from"=>{
+                "name"=>"Colin Rohan Simithraaratchy", 
+                "id"=>"#{uid}"
+              }, 
+    }, 
+    {
+      "id"=>"1044302049_2138559657264", 
+      "from"=>{
+                "name"=>"Collin Williams", 
+                "id"=>"1492711784"
+              }
+    },
+    {
+      "id"=>"1044302049_21385596572656", 
+      "from"=>{
+                "name"=>"Collin Williams", 
+                "id"=>"1492711784"
+              }
+    }
+  ]
 end
 
 def likes

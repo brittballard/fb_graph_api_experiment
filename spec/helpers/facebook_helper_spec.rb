@@ -56,11 +56,11 @@ describe FacebookHelper do
   
   describe "#is_or_are_top_commenters" do
     it 'should return is when there is one top commenter' do
-      is_or_are_top_commenters(1).should == "is"
+      is_or_are_top_commenters(1).should == " is"
     end
     
     it 'should return are when there is one top commenter' do
-      is_or_are_top_commenters(2).should == "are"
+      is_or_are_top_commenters(2).should == "s are"
     end
   end
   

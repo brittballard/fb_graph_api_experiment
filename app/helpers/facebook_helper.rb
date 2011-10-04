@@ -42,6 +42,6 @@ module FacebookHelper
   end
   
   def is_or_are_top_commenters(top_commenters_count)
-     top_commenters_count > 1 ? 'are' : 'is'
+     top_commenters_count > 1 ? 's are' : ' is'
   end
 end
