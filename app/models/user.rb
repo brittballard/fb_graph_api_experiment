@@ -6,8 +6,14 @@ class User
     @uid = uid
   end
 
-  def friends(api_options={})
-    graph.get_connections(uid, 'friends', api_options)
+  def name
+    @name ||= graph.get_object(uid, :fields => 'name')['name']
+  end
+
+  def friends()
+    @friends ||= graph.get_connections(uid, 'friends').sort do |friend1, friend2|
+                                                              friend1["name"].scan(/\w+/).first <=> friend2["name"].scan(/\w+/).first
+                                                            end
   end
 
   def feed

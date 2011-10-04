@@ -7,6 +7,20 @@ describe User do
     @user = User.new(@graph, @uid)
   end
 
+  describe '#name' do
+    before do
+      @me = {
+              "name" => "Britt Ballard",
+              "id" => @uid
+            }
+      @graph.should_receive(:get_object).with(@uid, :fields => 'name').once.and_return(@me)
+    end
+    
+    it 'should return the users name' do
+      @user.name.should == "Britt Ballard"
+    end
+  end
+  
   describe 'retriving friends' do
     before do
       @friends = [
@@ -19,16 +33,29 @@ describe User do
           "id"=>"1906778"
         }, 
         {
-          "name"=>"Garrett Fox", 
+          "name"=>"Garrett A Fox", 
           "id"=>"3007587"
         }
       ]
-      @graph.should_receive(:get_connections).with(@uid, 'friends', {}).and_return(@friends)
+      @graph.should_receive(:get_connections).with(@uid, 'friends').and_return(@friends)
     end
     
     describe '#friends' do
-      it 'should retrieve friends via the graph api' do
-        @user.friends.should == @friends
+      it 'should retrieve friends via the graph api and alphabatize them' do
+        @user.friends.should == [
+                                  {
+                                    "name"=>"Fred Bliss", 
+                                    "id"=>"1906778"
+                                  }, 
+                                  {
+                                    "name"=>"Garrett A Fox", 
+                                    "id"=>"3007587"
+                                  },
+                                  {
+                                    "name"=>"Kim Nguyen", 
+                                    "id"=>"700800"
+                                  }
+                                ]
       end
     end
   end

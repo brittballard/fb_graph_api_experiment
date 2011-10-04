@@ -20,6 +20,7 @@ describe FacebookController do
       it { response.should be_success }
       it 'should assign top_feed_commenters' do
         assigns[:top_feed_commenters].should == @top_feed_commenters
+        assigns[:friend_user].should == @friend_user
       end
     end
   end
@@ -47,7 +48,7 @@ describe FacebookController do
     describe 'with paging and all appropriate params' do
       before do
         login_to_facebook
-        @user.should_receive(:friends).with({ :limit => @limit_and_offset, :offset => @limit_and_offset }).once.and_return(@friends)
+        @user.should_receive(:friends).with().once.and_return(@friends)
         get :friends, { :limit => @limit_and_offset, :offset => @limit_and_offset }
       end
       
