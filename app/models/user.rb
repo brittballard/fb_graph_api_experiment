@@ -12,8 +12,8 @@ class User
 
   def friends()
     @friends ||= graph.get_connections(uid, 'friends').sort do |friend1, friend2|
-                                                              friend1["name"].scan(/\w+/).first <=> friend2["name"].scan(/\w+/).first
-                                                            end
+      friend1["name"] <=> friend2["name"]
+    end
   end
 
   def feed

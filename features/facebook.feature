@@ -3,4 +3,9 @@ Feature: facebook users should be able to view friends and determine top wall co
   Scenario: Logged in users should have access to their friends
     Given I am logged in
     When I visit the index
-    Then I should see a Friends link
+    And I click the Friends link
+    Then I should see the following friends:
+    | name           |
+    | Aaron Boswell  |
+    | Aaron Holladay |
+    | Andrew Crowley |

@@ -19,13 +19,11 @@ module FacebookHelper
     friends.slice(offset, FRIENDS_PER_PAGE)
   end
   
-  def get_friend_offset
-    get_friend_offset_forward
-  end
-  
   def get_friend_offset_forward(offset=0)
     offset + FRIENDS_PER_PAGE
   end
+  
+  alias :get_friend_offset :get_friend_offset_forward
   
   def get_friend_offset_backwards(offset=0)
     offset - FRIENDS_PER_PAGE < 0 ? 0 : offset - FRIENDS_PER_PAGE
