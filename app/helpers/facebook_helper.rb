@@ -40,6 +40,8 @@ module FacebookHelper
   def show_last_friend_page_icon(offset)
     offset != 0
   end
+
+# .sort{ |commenter1,commenter2| commenter2["comment_count"] <=> commenter1["comment_count"] }
   
   def is_or_are_top_commenters(top_commenters_count)
      top_commenters_count > 1 ? 's are' : ' is'

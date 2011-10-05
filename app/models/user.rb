@@ -17,11 +17,13 @@ class User
   end
 
   def feed
-    @feed ||= graph.get_connections(uid, 'feed', :limit => 500, :fields => 'from')
+    @feed ||= graph.get_connections(uid, 'feed', :limit => 500, :fields => 'comments')
   end
 
-  def feed_with_self_posts_filtered
-    @feed_with_self_posts_filtered ||= feed.select { |post| post['from']['id'] != @uid.to_s }
+  def feed_comments
+    @feed_with_zero_comment_posts_filtered ||= feed.map do |post| 
+      post["comments"]["data"] unless post["comments"]["count"] == 0
+    end.flatten.compact
   end
 
   def likes
@@ -32,14 +34,8 @@ class User
     @likes_by_category ||= likes.sort_by {|l| l['name']}.group_by {|l| l['category']}.sort
   end
   
-  def top_feed_commenters
-    max_number_of_comments = 0
-    @top_feed_commenters ||= feed_with_self_posts_filtered
-                              .inject({}) do |hash, post| 
-                                hash.has_key?(post['from']) ? hash[post['from']] = hash[post['from']] + 1 : hash[post['from']] = 1
-                                max_number_of_comments = hash[post['from']] unless hash[post['from']] <= max_number_of_comments
-                                hash
-                              end.select{ |key, value| value == max_number_of_comments }
-                                  .map{ |commenter_information| commenter_information[0] }
+  def feed_commenters_with_comment_count
+    @top_feed_commenters ||= feed_comments.group_by { |comment| comment["from"] }
+                              .map{ |from,comments| from["comment_count"] = comments.count; from }
   end
 end

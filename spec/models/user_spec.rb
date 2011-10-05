@@ -64,28 +64,53 @@ describe User do
     before do
       @feed = [
         {
-          "id" => "1044302049_2218102325781", 
-          "from"=> {
-                    "name"=>"Chris Sherwyn", 
-                    "id"=>"8321440"
-                    }, 
+          "comments"=> { "count"=>0 }, 
+          "id"=>"670043931_141884102577279", 
+          "created_time"=>"2011-10-05T04:27:36+0000"
         }, 
         {
-          "id"=>"1044302049_2216325561363", 
-          "from"=>{
-                    "name"=>"Colin Rohan Simithraaratchy", 
-                    "id"=>"#{@uid}"
-                  }, 
-        }, 
-        {
-          "id"=>"1044302049_2138559657264", 
-          "from"=>{
-                    "name"=>"Collin Williams", 
-                    "id"=>"1492711784"
-                  }
-        }
+          "comments"=>
+            {
+              "data"=>[
+                        {
+                          "id"=>"670043931_10150316437798932_4919523", 
+                          "from"=> { "name"=>"Molly Tracy", "id"=>"100000206650507" }, 
+                          "message"=>"wear glitter!", 
+                          "created_time"=>"2011-10-03T01:14:40+0000", 
+                          "likes"=>2
+                        }, 
+                        {
+                          "id"=>"670043931_10150316437798932_4920371", 
+                          "from"=> { "name"=>"Justin Shannon", "id"=>"812139048" }, 
+                          "message"=>"Wear glitter!", 
+                          "created_time"=>"2011-10-03T04:03:14+0000", 
+                          "likes"=>1
+                        }, 
+                      ], 
+              "count" => 2
+            },
+            "id"=>"670043931_141884102577280", 
+            "created_time"=>"2011-10-05T04:27:36+0000"
+          },
+          {
+            "comments"=>
+              {
+                "data"=>[
+                          {
+                            "id"=>"670043931_10150316437798932_4919523", 
+                            "from"=>{ "name"=>"Molly Tracy", "id"=>"100000206650507" }, 
+                            "message"=>"wear glitter!", 
+                            "created_time"=>"2011-10-03T01:14:40+0000", 
+                            "likes"=>2
+                          }
+                ], 
+                "count" => 1
+            },
+            "id"=>"670043931_141884102577280", 
+            "created_time"=>"2011-10-05T04:27:36+0000"
+          }
       ]
-      @graph.should_receive(:get_connections).with(@uid, 'feed', :limit => 500, :fields => 'from').once.and_return(@feed)
+      @graph.should_receive(:get_connections).with(@uid, 'feed', :limit => 500, :fields => 'comments').once.and_return(@feed)
     end
     
     describe '#feed' do
@@ -100,68 +125,39 @@ describe User do
       end
     end
     
-    describe '#feed_with_self_posts_filtered' do
-      it 'should retreive the feed via the graph api and filter out all posts by the instantiated user' do
-        @user.feed_with_self_posts_filtered.length.should == 2
-        @user.feed_with_self_posts_filtered[0].should == @feed[0]
-        @user.feed_with_self_posts_filtered[1].should == @feed[2]
-      end
-      
-      it 'should return an empty array when only self posts are returned' do
-        @feed.clear
-        @feed << {
-                    "id"=>"1044302049_2216325561363", 
-                    "from"=>{
-                              "name"=>"Colin Rohan Simithraaratchy", 
-                              "id"=>"#{@uid}"
-                            }, 
-                  }
-        @user.feed_with_self_posts_filtered.should == []
+    describe "#feed_comments" do
+      it 'should return an array of the comment hashes only' do
+        @user.feed_comments.should == [
+            {
+              "id" => "670043931_10150316437798932_4919523", 
+              "from" => { "name" => "Molly Tracy", "id"=>"100000206650507" }, 
+              "message"=>"wear glitter!", 
+              "created_time"=>"2011-10-03T01:14:40+0000", 
+              "likes"=>2
+            }, 
+            {
+              "id"=>"670043931_10150316437798932_4920371", 
+              "from"=> { "name"=>"Justin Shannon", "id"=>"812139048" }, 
+              "message"=>"Wear glitter!", 
+              "created_time"=>"2011-10-03T04:03:14+0000", 
+              "likes"=>1
+            },
+            {
+              "id"=>"670043931_10150316437798932_4919523", 
+              "from"=>{ "name"=>"Molly Tracy", "id"=>"100000206650507" }, 
+              "message"=>"wear glitter!", 
+              "created_time"=>"2011-10-03T01:14:40+0000", 
+              "likes"=>2
+            }
+          ]
       end
     end
     
-    describe '#top_feed_commenters' do
-      before do
-        @feed << {
-                    "id"=>"1044302049_2138559657265", 
-                    "from"=>{
-                              "name"=>"Collin Williams", 
-                              "id"=>"1492711784"
-                            }
-                  }
-      end
-      
+    describe '#feed_commenters_with_comment_count' do
       it 'should retrieve the feed via the graph api and determine which user is the most consistent poster other than the user themselves' do
-        @user.top_feed_commenters.should == [{
-                                              "name" => "Collin Williams",
-                                              "id" => "1492711784"
-                                            }]
-      end
-      
-      it 'should return multiple friends when there is a comment count tie' do
-        @feed << {
-                    "id" => "1044302049_2218102325781", 
-                    "from"=> {
-                              "name"=>"Chris Sherwyn", 
-                              "id"=>"8321440"
-                              }, 
-                  }
-        
-        @user.top_feed_commenters.count.should == 2
-        @user.top_feed_commenters.should include({
-                                                    "name" => "Collin Williams",
-                                                    "id" => "1492711784"
-                                                  })
-                                            
-        @user.top_feed_commenters.should include({
-                                                    "name" => "Chris Sherwyn",
-                                                    "id" => "8321440"
-                                                  })
-      end
-      
-      it 'should return an empty array when only self posts, or no posts, are returned in the feed' do
-        @feed.clear
-        @user.top_feed_commenters.should == []
+        @user.feed_commenters_with_comment_count.count.should == 2
+        @user.feed_commenters_with_comment_count.should include({ "name" => "Molly Tracy", "id" => "100000206650507", "comment_count" => 2 })
+        @user.feed_commenters_with_comment_count.should include({ "name" => "Justin Shannon", "id" => "812139048", "comment_count" => 1 })
       end
     end
   end
