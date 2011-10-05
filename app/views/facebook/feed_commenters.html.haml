@@ -5,6 +5,6 @@
   - if @feed_commenters.present?
     %ul
       - @feed_commenters.each do |friend|
-        %li= link_to friend['name'], "facebook.com/#{friend["id"]}", :target => "blank"
+        %li= link_to friend['name'], "http://facebook.com/#{friend["id"]}", :target => "blank"
   - else
     = "Nobody has posted on #{@friend_user.name}'s wall!"
