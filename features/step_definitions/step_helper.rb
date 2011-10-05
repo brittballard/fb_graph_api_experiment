@@ -1,78 +1,98 @@
 def setup_mock_graph
-  @single_top_commenter_id = "596914111"
-  @multiple_top_commenter_id = "1300913662"
-  @no_top_commenter_id = "7961179"
+  @one_commenter_id = "596914111"
+  @multiple_commenters_id = "1300913662"
+  @no_commenter_id = "7961179"
   
   @graph.should_receive(:get_connections).with(@uid, 'likes').any_number_of_times.and_return(likes)
   @graph.should_receive(:get_connections).with(@uid, 'friends').any_number_of_times.and_return(friends)
 
-  @graph.should_receive(:get_connections).with(@single_top_commenter_id, "feed", { :limit => 500, :fields => "from" }).any_number_of_times.and_return(single_top_commenter_feed(@single_top_commenter_id))
-  @graph.should_receive(:get_connections).with(@multiple_top_commenter_id, "feed", { :limit => 500, :fields => "from" }).any_number_of_times.and_return(multiple_top_commenters_feed(@multiple_top_commenter_id))
-  @graph.should_receive(:get_connections).with(@no_top_commenter_id, "feed", { :limit => 500, :fields => "from" }).any_number_of_times.and_return(no_top_commenters_feed(@no_top_commenter_id))
+  @graph.should_receive(:get_connections).with(@one_commenter_id, "feed", {:limit => 500, :fields => "comments"}).any_number_of_times.and_return(one_commenter_feed)
+  @graph.should_receive(:get_connections).with(@multiple_commenters_id, "feed", {:limit => 500, :fields => "comments"}).any_number_of_times.and_return(multiple_commenters_feed)
+  @graph.should_receive(:get_connections).with(@no_commenter_id, "feed", {:limit => 500, :fields => "comments"}).any_number_of_times.and_return(no_commenters_feed)
 
-  @graph.should_receive(:get_object).with(@single_top_commenter_id, { :fields => "name" }).any_number_of_times.and_return({ "name" => "Aaron Boswell" })
-  @graph.should_receive(:get_object).with(@multiple_top_commenter_id, { :fields => "name" }).any_number_of_times.and_return({ "name" => "Amber Knight" })
-  @graph.should_receive(:get_object).with(@no_top_commenter_id, { :fields => "name" }).any_number_of_times.and_return({ "name" => "Adrian Thomas" })
+  @graph.should_receive(:get_object).with(@one_commenter_id, { :fields => "name" }).any_number_of_times.and_return({ "name" => "Aaron Boswell" })
+  @graph.should_receive(:get_object).with(@multiple_commenters_id, { :fields => "name" }).any_number_of_times.and_return({ "name" => "Amber Knight" })
+  @graph.should_receive(:get_object).with(@no_commenter_id, { :fields => "name" }).any_number_of_times.and_return({ "name" => "Adrian Thomas" })
 end
 
-def no_top_commenters_feed(uid)
-  single_top_commenter_feed(uid).select { |post| post['from']['id'] == uid }
-end
-
-def multiple_top_commenters_feed(uid)
-  single_top_commenter_feed(uid) << {
-                                  "id" => "1044302049_2218102325781", 
-                                  "from"=> {
-                                            "name"=>"Chris Sherwyn", 
-                                            "id"=>"8321440"
-                                            }, 
-                                }
-end
-
-def single_top_commenter_feed(uid)
+def no_commenters_feed
   [
     {
-      "id" => "1044302049_2218102325781", 
-      "from"=> {
-                "name"=>"Chris Sherwyn", 
-                "id"=>"8321440"
-                }, 
-    }, 
-    {
-      "id"=>"1044302049_2216325561363", 
-      "from"=>{
-                "name"=>"Colin Rohan Simithraaratchy", 
-                "id"=>"#{uid}"
-              }, 
-    }, 
-    {
-      "id"=>"1044302049_2216325561364", 
-      "from"=>{
-                "name"=>"Colin Rohan Simithraaratchy", 
-                "id"=>"#{uid}"
-              }, 
-    }, 
-    {
-      "id"=>"1044302049_2216325561365", 
-      "from"=>{
-                "name"=>"Colin Rohan Simithraaratchy", 
-                "id"=>"#{uid}"
-              }, 
-    }, 
-    {
-      "id"=>"1044302049_2138559657264", 
-      "from"=>{
-                "name"=>"Collin Williams", 
-                "id"=>"1492711784"
-              }
-    },
-    {
-      "id"=>"1044302049_21385596572656", 
-      "from"=>{
-                "name"=>"Collin Williams", 
-                "id"=>"1492711784"
-              }
+      "comments"=> { "count"=>0 }, 
+      "id"=>"670043931_141884102577279", 
+      "created_time"=>"2011-10-05T04:27:36+0000"
     }
+  ]
+end
+
+def one_commenter_feed
+  [
+    {
+      "comments"=>
+        {
+          "data"=>[
+                    {
+                      "id"=>"670043931_10150316437798932_4919523", 
+                      "from"=>{ "name"=>"Collin Williams", "id"=>"1492711784" },
+                      "message"=>"wear glitter!", 
+                      "created_time"=>"2011-10-03T01:14:40+0000", 
+                      "likes"=>2
+                    }
+          ], 
+          "count" => 1
+      }
+    }
+  ]
+end
+
+def multiple_commenters_feed
+  [
+    {
+      "comments"=> { "count"=>0 }, 
+      "id"=>"670043931_141884102577279", 
+      "created_time"=>"2011-10-05T04:27:36+0000"
+    }, 
+    {
+      "comments"=>
+        {
+          "data"=>[
+                    {
+                      "id"=>"670043931_10150316437798932_4919523", 
+                      "from"=> { "name"=>"Chris Sherwyn", "id"=>"8321440" }, 
+                      "message"=>"wear glitter!", 
+                      "created_time"=>"2011-10-03T01:14:40+0000", 
+                      "likes"=>2
+                    }, 
+                    {
+                      "id"=>"670043931_10150316437798932_4920371", 
+                      "from"=>{ "name"=>"Collin Williams", "id"=>"1492711784" },
+                      "message"=>"Wear glitter!", 
+                      "created_time"=>"2011-10-03T04:03:14+0000", 
+                      "likes"=>1
+                    }, 
+                  ], 
+          "count" => 2
+        },
+        "id"=>"670043931_141884102577280", 
+        "created_time"=>"2011-10-05T04:27:36+0000"
+      },
+      {
+        "comments"=>
+          {
+            "data"=>[
+                      {
+                        "id"=>"670043931_10150316437798932_4919523", 
+                        "from"=>{ "name"=>"Collin Williams", "id"=>"1492711784" },
+                        "message"=>"wear glitter!", 
+                        "created_time"=>"2011-10-03T01:14:40+0000", 
+                        "likes"=>2
+                      }
+            ], 
+            "count" => 1
+        },
+        "id"=>"670043931_141884102577280", 
+        "created_time"=>"2011-10-05T04:27:36+0000"
+      }
   ]
 end
 
