@@ -75,4 +75,16 @@ describe FacebookHelper do
       get_offset_for_letter(test_array, 'F', 50).should == 50
     end
   end
+  
+  describe "#sort_friends_by_comment_count" do
+    it 'should sort a list of hashes with a comment_count key by the value associated with it' do
+      test_array = (1..4).to_a.map { |comment_count| { "comment_count" => comment_count} }
+      sort_friends_by_comment_count(test_array).should == [
+                                                            { "comment_count" => 4},
+                                                            { "comment_count" => 3},
+                                                            { "comment_count" => 2},
+                                                            { "comment_count" => 1}
+                                                          ]
+    end
+  end
 end

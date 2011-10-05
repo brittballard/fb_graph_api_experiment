@@ -41,7 +41,9 @@ module FacebookHelper
     offset != 0
   end
 
-# .sort{ |commenter1,commenter2| commenter2["comment_count"] <=> commenter1["comment_count"] }
+  def sort_friends_by_comment_count(friends)
+    friends.sort{ |commenter1,commenter2| commenter2["comment_count"] <=> commenter1["comment_count"] }
+  end
   
   def is_or_are_top_commenters(top_commenters_count)
      top_commenters_count > 1 ? 's are' : ' is'

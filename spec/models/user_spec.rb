@@ -154,7 +154,7 @@ describe User do
     end
     
     describe '#feed_commenters_with_comment_count' do
-      it 'should retrieve the feed via the graph api and return a list of commenters including the number of comments they have posted' do
+      it 'should return an array of commenters including the number of comments they have posted' do
         @user.feed_commenters_with_comment_count.count.should == 2
         @user.feed_commenters_with_comment_count.should include({ "name" => "Molly Tracy", "id" => "100000206650507", "comment_count" => 2 })
         @user.feed_commenters_with_comment_count.should include({ "name" => "Justin Shannon", "id" => "812139048", "comment_count" => 1 })

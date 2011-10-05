@@ -36,6 +36,6 @@ class User
   
   def feed_commenters_with_comment_count
     @top_feed_commenters ||= feed_comments.group_by { |comment| comment["from"]["id"] }
-                              .map{ |from,comments| comments.first["from"]["comment_count"] = comments.count; comments.first["from"] }
+                              .map{ |user_id,comments| comments.first["from"]["comment_count"] = comments.count; comments.first["from"] }
   end
 end

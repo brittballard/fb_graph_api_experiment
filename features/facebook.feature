@@ -65,9 +65,9 @@ Feature: facebook users should be able to view friends and determine top wall co
     And I click the Friends link
     And I click the Aaron Boswell link
     Then I should see the following friends:
-    | name            |
-    | Collin Williams |
-    And I should see the following text Aaron Boswell's top commenter is
+    | name                               |
+    | Collin Williams - Post comments: 1 |
+    And I should see the following text Aaron Boswell's commenter is
 
   Scenario: Logged in users should be able to view friends top commenters when there are multiple top commenters
     Given I am logged in
@@ -75,15 +75,15 @@ Feature: facebook users should be able to view friends and determine top wall co
     And I click the Friends link
     And I click the Amber Knight link
     Then I should see the following friends:
-    | name            |
-    | Collin Williams |
-    | Chris Sherwyn   |
-    And I should see the following text Amber Knight's top commenters are
+    | name                               |
+    | Collin Williams - Post comments: 2 |
+    | Chris Sherwyn - Post comments: 1   |
+    And I should see the following text Amber Knight's commenters are
 
   Scenario: Logged in users should be able to view friends top commenters when there are no commenters
     Given I am logged in
     When I visit the index
     And I click the Friends link
     And I click the Adrian Thomas link
-    Then I should see the following text Nobody has posted on Adrian Thomas's wall!
+    Then I should see the following text Nobody has commented on any posts on Adrian Thomas's wall!
   
