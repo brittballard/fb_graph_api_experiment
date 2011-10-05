@@ -5,7 +5,8 @@
   - if @feed_commenters.present?
     %ul
       - sort_friends_by_comment_count(@feed_commenters).each do |friend|
-        %li#commenter= link_to(friend['name'], "http://facebook.com/#{friend["id"]}", :target => "blank") 
-        =" - Post comments: #{friend["comment_count"]}"
+        %li#commenter
+          = link_to(friend['name'], "http://facebook.com/#{friend["id"]}", :target => "blank")
+          = " - Post comments: #{friend["comment_count"]}"
   - else
     = "Nobody has commented on any posts on #{@friend_user.name}'s wall!"
