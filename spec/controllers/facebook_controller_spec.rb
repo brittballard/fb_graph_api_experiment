@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe FacebookController do
   
-  describe 'top_feed_commenters with GET' do
+  describe 'feed_commenters with GET' do
     before do
       setup_mock_graph_and_user
     end
@@ -10,16 +10,16 @@ describe FacebookController do
     describe 'when logged into facebook' do
       before do
         login_to_facebook
-        @top_feed_commenters = mock('top_feed_commenters')
+        @feed_commenters = mock('feed_commenters')
         @friend_user = mock('friend_user')
         User.should_receive(:new).with(@graph, 43).and_return(@friend_user)
-        @friend_user.should_receive(:top_feed_commenters).and_return(@top_feed_commenters)
-        get :top_feed_commenters, :friend_id => 43
+        @friend_user.should_receive(:feed_commenters_with_comment_count).and_return(@feed_commenters)
+        get :feed_commenters, :friend_id => 43
       end
       
       it { response.should be_success }
       it 'should assign top_feed_commenters' do
-        assigns[:top_feed_commenters].should == @top_feed_commenters
+        assigns[:feed_commenters].should == @feed_commenters
         assigns[:friend_user].should == @friend_user
       end
     end

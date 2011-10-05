@@ -17,9 +17,9 @@ class FacebookController < ApplicationController
     @offset = params[:offset].to_i
   end
 
-  def top_feed_commenters
+  def feed_commenters
     @friend_user = User.new(@graph, params[:friend_id])
-    @top_feed_commenters = @friend_user.top_feed_commenters
+    @feed_commenters = @friend_user.feed_commenters_with_comment_count
   end
 
   protected

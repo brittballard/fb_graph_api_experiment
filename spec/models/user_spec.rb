@@ -98,7 +98,7 @@ describe User do
                 "data"=>[
                           {
                             "id"=>"670043931_10150316437798932_4919523", 
-                            "from"=>{ "name"=>"Molly Tracy", "id"=>"100000206650507" }, 
+                            "from"=>{ "name"=>"Molly Tracy 2", "id"=>"100000206650507" }, 
                             "message"=>"wear glitter!", 
                             "created_time"=>"2011-10-03T01:14:40+0000", 
                             "likes"=>2
@@ -144,7 +144,7 @@ describe User do
             },
             {
               "id"=>"670043931_10150316437798932_4919523", 
-              "from"=>{ "name"=>"Molly Tracy", "id"=>"100000206650507" }, 
+              "from"=>{ "id"=>"100000206650507", "name"=>"Molly Tracy 2" }, 
               "message"=>"wear glitter!", 
               "created_time"=>"2011-10-03T01:14:40+0000", 
               "likes"=>2
@@ -154,7 +154,7 @@ describe User do
     end
     
     describe '#feed_commenters_with_comment_count' do
-      it 'should retrieve the feed via the graph api and determine which user is the most consistent poster other than the user themselves' do
+      it 'should retrieve the feed via the graph api and return a list of commenters including the number of comments they have posted' do
         @user.feed_commenters_with_comment_count.count.should == 2
         @user.feed_commenters_with_comment_count.should include({ "name" => "Molly Tracy", "id" => "100000206650507", "comment_count" => 2 })
         @user.feed_commenters_with_comment_count.should include({ "name" => "Justin Shannon", "id" => "812139048", "comment_count" => 1 })
