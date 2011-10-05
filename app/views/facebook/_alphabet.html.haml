@@ -1,4 +1,5 @@
-- previous_offset = 0
-- ("A".."Z").to_a.each do |letter|
-  - previous_offset = offset = get_offset_for_letter(@friends, letter, previous_offset)
-  = link_to letter, facebook_url(:friends, :offset => offset)
+#alphabet-menu
+  - previous_offset = 0
+  - ("A".."Z").to_a.each do |letter|
+    - previous_offset = offset = get_offset_for_letter(@friends, letter, previous_offset)
+    = link_to letter, facebook_url(:friends, :offset => offset)

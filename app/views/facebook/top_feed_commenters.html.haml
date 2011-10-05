@@ -1,9 +1,10 @@
 = render "menu"
 %br
-= "#{@friend_user.name}'s top commenter#{is_or_are_top_commenters(@top_feed_commenters.count)}:"
-- if @top_feed_commenters.present?
-  %ul
-    - @top_feed_commenters.each do |friend|
-      %li= friend['name']
-- else
-  = "Nobody has posted on #{@friend_user.name}'s wall!"
+#top-friends
+  = "#{@friend_user.name}'s top commenter#{is_or_are_top_commenters(@top_feed_commenters.count)}:"
+  - if @top_feed_commenters.present?
+    %ul
+      - @top_feed_commenters.each do |friend|
+        %li= friend['name']
+  - else
+    = "Nobody has posted on #{@friend_user.name}'s wall!"
